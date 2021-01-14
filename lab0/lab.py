@@ -1,5 +1,6 @@
 # No Imports Allowed!
 
+## Test input
 inp = {
             'rate': 20,
             'left': [1,2,3,4,5,6],
@@ -13,11 +14,30 @@ def backwards(sound):
     backwards_sound['rate'] = sound['rate']
     backwards_sound['left'] = list(reversed(sound['left']))
     backwards_sound['right'] = list(reversed(sound['right']))
+
     return backwards_sound
 
 
 def mix(sound1, sound2, p):
-    raise NotImplementedError
+    mixed = {}
+    mixed['rate'] = sound1['rate']
+    mixed['left'] = []
+    mixed['right'] = []
+
+    # Different sound rates return None
+    if (sound1['rate'] != sound2['rate']):
+        return None
+
+    # Return mixed sound of shortest duration
+    duration = min(len(sound1['left']), len(sound2['left']))
+    left1, left2 = sound1['left'][:duration], sound2['left'][:duration]
+    right1, right2 = sound1['right'][:duration], sound2['right'][:duration]
+
+    # sound1*p, sound2*(1-p)
+    mixed['left'] = list(map(lambda x, y: x*p + y*(1-p), left1, left2))
+    mixed['right'] = list(map(lambda x, y: x*p + y*(1-p), right1, right2))
+
+    return mixed
 
 
 def echo(sound, num_echos, delay, scale):
@@ -87,6 +107,10 @@ def write_wav(sound, filename):
     outfile.close()
 
 
+def main():
+    hello = load_wav('./sounds/mystery.wav')
+    write_wav(backwards(hello), 'hello_reversed.wav')
+    
 if __name__ == '__main__':
     # code in this block will only be run when you explicitly run your script,
     # and not when the tests are being run.  this is a good place to put your
@@ -96,6 +120,6 @@ if __name__ == '__main__':
     # here is an example of loading a file (note that this is specified as
     # sounds/hello.wav, rather than just as hello.wav, to account for the
     # sound files being in a different directory than this file)
-    hello = load_wav('sounds/hello.wav')
+    hello = load_wav('sounds/mystery.wav')
 
-    # write_wav(backwards(hello), 'hello_reversed.wav')
+    write_wav(backwards(hello), 'hello_reversed.wav')

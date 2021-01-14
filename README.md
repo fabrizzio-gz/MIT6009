@@ -4,3 +4,4 @@
 - [x] Backwards Audio
 - [x] Mixing Audio
 - [x] Echo
+- [ ] Pan

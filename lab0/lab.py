@@ -69,7 +69,18 @@ def echo(sound, num_echos, delay, scale):
 
 
 def pan(sound):
-    raise NotImplementedError
+    pan_sound = {}
+    pan_sound['rate'] = sound['rate']
+    pan_sound['left'] = sound['left'][:]
+    pan_sound['right'] = sound['right'][:]
+    samples = len(pan_sound['left'])
+
+    for i in range(samples):
+        scale_factor = i / (samples - 1)
+        pan_sound['right'][i] *= scale_factor
+        pan_sound['left'][i] *= (1 - scale_factor)
+
+    return pan_sound
 
 
 def remove_vocals(sound):

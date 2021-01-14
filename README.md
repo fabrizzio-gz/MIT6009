@@ -2,4 +2,5 @@
 
 ## [Lab0](https://py.mit.edu/fall20/labs/lab0): Audio Processing
 - [x] Backwards Audio
-- [ ] Mixing Audio
+- [x] Mixing Audio
+- [x] Echo

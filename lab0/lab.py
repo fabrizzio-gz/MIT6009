@@ -41,7 +41,31 @@ def mix(sound1, sound2, p):
 
 
 def echo(sound, num_echos, delay, scale):
-    raise NotImplementedError
+    echo_sound = {}
+    echo_sound['rate'] = sound['rate']
+
+    # Echo sound is num_echos*sample_delay samples longer
+    sample_delay = round(delay * sound['rate'])
+    echo_sound['left'] = sound['left'] + [0] * (num_echos * sample_delay)
+    echo_sound['right'] = sound['right'] + [0] * (num_echos * sample_delay)
+
+    echo_right = sound['right']
+    echo_left = sound['left']
+    for echo_run in range(num_echos):
+
+        # At each run, the echo is scaled down
+        echo_right = list(map(lambda x: x * scale, echo_right))
+        echo_left = list(map(lambda x: x * scale, echo_left))
+
+        # Adding echo with a sample delay
+        for index in range(len(echo_right)):
+            echo_sound['left'][index + sample_delay] += echo_left[index]
+            echo_sound['right'][index + sample_delay] += echo_right[index]
+
+        # Sample delay will be incremented for next run of echo
+        sample_delay += round(delay * sound['rate'])
+
+    return echo_sound
 
 
 def pan(sound):
@@ -107,10 +131,6 @@ def write_wav(sound, filename):
     outfile.close()
 
 
-def main():
-    hello = load_wav('./sounds/mystery.wav')
-    write_wav(backwards(hello), 'hello_reversed.wav')
-    
 if __name__ == '__main__':
     # code in this block will only be run when you explicitly run your script,
     # and not when the tests are being run.  this is a good place to put your
@@ -120,6 +140,5 @@ if __name__ == '__main__':
     # here is an example of loading a file (note that this is specified as
     # sounds/hello.wav, rather than just as hello.wav, to account for the
     # sound files being in a different directory than this file)
-    hello = load_wav('sounds/mystery.wav')
-
-    write_wav(backwards(hello), 'hello_reversed.wav')
+    hello = load_wav('sounds/chord.wav')
+    write_wav(echo(hello, 5, .3, .6), 'hello_reversed.wav')

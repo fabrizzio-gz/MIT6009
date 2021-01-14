@@ -5,3 +5,4 @@
 - [x] Mixing Audio
 - [x] Echo
 - [x] Pan
+- [x] Removing vocals

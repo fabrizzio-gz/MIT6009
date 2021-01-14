@@ -84,7 +84,15 @@ def pan(sound):
 
 
 def remove_vocals(sound):
-    raise NotImplementedError
+    no_vocals = {}
+    no_vocals['rate'] = sound['rate']
+
+    # Sound is mono: left-right will delete the mono part of samples
+    no_vocals_samples = list(map(lambda x, y: x - y, sound['left'], sound['right']))
+    no_vocals['left'] = no_vocals_samples
+    no_vocals['right'] = no_vocals_samples
+
+    return no_vocals
 
 
 # below are helper functions for converting back-and-forth between WAV files
@@ -151,5 +159,5 @@ if __name__ == '__main__':
     # here is an example of loading a file (note that this is specified as
     # sounds/hello.wav, rather than just as hello.wav, to account for the
     # sound files being in a different directory than this file)
-    hello = load_wav('sounds/chord.wav')
+    hello = load_wav('sounds/coffee.wav')
     write_wav(echo(hello, 5, .3, .6), 'hello_reversed.wav')

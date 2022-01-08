@@ -8,6 +8,11 @@ from PIL import Image as Image
 
 
 def get_pixel(image, x, y):
+    # Adjust edge effects
+    x = 0 if x < 0 else x
+    x = image['width'] - 1 if x >= image['width'] else x
+    y = 0 if y < 0 else y
+    y = image['height'] - 1 if y >= image['height'] else y
     return image['pixels'][x + y*image['width']]
 
 

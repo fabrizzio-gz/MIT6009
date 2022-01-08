@@ -87,6 +87,21 @@ def test_inverted_images(fname):
     compare_images(result, expected)
 
 
+def test_roundclip_1():
+    input =  {
+        'height': 3,
+        'width': 3,
+        'pixels': [-1, 2, 3, 4.2, 5.6, 6, 7, 8, 270],
+    }
+    expected = {
+        'height': 3,
+        'width': 3,
+        'pixels': [0, 2, 3, 4, 6, 6, 7, 8, 255],
+    }
+    lab.round_and_clip_image(input)
+    compare_images(input, expected)
+
+
 @pytest.mark.parametrize("kernsize", [1, 3, 7])
 @pytest.mark.parametrize("fname", ['mushroom', 'twocats', 'chess'])
 def test_blurred_images(kernsize, fname):

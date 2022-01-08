@@ -68,8 +68,9 @@ def round_and_clip_image(image):
     255 in the output; and any locations with values lower than 0 in the input
     should have value 0 in the output.
     """
-    raise NotImplementedError
-
+    pixels = image['pixels']
+    for i, pixel in enumerate(pixels):
+        pixels[i] = 0 if pixel < 0 else (255 if pixel > 255 else round(pixel))
 
 # FILTERS
 

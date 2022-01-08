@@ -150,11 +150,53 @@ def test_blurred_images(kernsize, fname):
 
 def test_blurred_black_image():
     # REPLACE THIS with your 1st test case from section 6.1
-    assert False
+    image = {
+        'width': 6,
+        'height': 5,
+        'pixels': [0] * (6 * 5)    
+    }
+    result = lab.blurred(image, 3)
+    compare_images(result, image)
+    result_5 = lab.blurred(image, 5)
+    compare_images(result_5, image)
 
 def test_blurred_centered_pixel():
     # REPLACE THIS with your 2nd test case from section 6.1
-    assert False
+    im = lab.load_image(os.path.join(TEST_DIRECTORY, 'test_images', 'centered_pixel.png'))
+    result = lab.blurred(im, 3)
+    expected = {
+        'height': 11,
+        'width': 11,
+        'pixels': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 28, 28, 28, 0, 0, 0, 0,
+                   0, 0, 0, 0, 28, 28, 28, 0, 0, 0, 0,
+                   0, 0, 0, 0, 28, 28, 28, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    }
+    compare_images(result, expected)
+    result_5 = lab.blurred(im, 5)
+    expected_5 = {
+        'height': 11,
+        'width': 11,
+        'pixels': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0,
+                   0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0,
+                   0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0,
+                   0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0,
+                   0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    }
+    compare_images(result_5, expected_5)
 
 @pytest.mark.parametrize("kernsize", [1, 3, 9])
 @pytest.mark.parametrize("fname", ['mushroom', 'twocats', 'chess'])

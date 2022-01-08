@@ -108,6 +108,15 @@ def round_and_clip_image(image):
 
 # FILTERS
 
+def get_boxblur(n):
+    """
+    Returns a nxn boxblur kernel.
+    """
+    return {
+        'size': n,
+        'flat_kernel': [1/n ** 2] * n ** 2
+    }
+
 def blurred(image, n):
     """
     Return a new image representing the result of applying a box blur (with
@@ -118,14 +127,16 @@ def blurred(image, n):
     """
     # first, create a representation for the appropriate n-by-n kernel (you may
     # wish to define another helper function for this)
-    raise NotImplementedError
+    boxblur = get_boxblur(n)
 
     # then compute the correlation of the input image with that kernel
-    raise NotImplementedError
+    result = correlate(image, boxblur)
 
     # and, finally, make sure that the output is a valid image (using the
     # helper function from above) before returning it.
-    raise NotImplementedError
+    round_and_clip_image(result)
+
+    return result
 
 
 

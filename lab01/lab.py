@@ -40,6 +40,29 @@ def inverted(image):
 
 # HELPER FUNCTIONS
 
+def get_kernel(kernel, x, y):
+    """
+    Returns the kernel value at kernel[x, y].
+    """
+    return kernel['flat_kernel'][x + y*kernel['size']]
+
+def get_correlation(image, x, y, kernel):
+    """
+    Computes and returns the correlated pixel at image pixel (x,y) based on the
+    correlation kernel.
+    """
+    n = kernel['size']
+    newcolor = 0
+    mid = n // 2
+    for x_kernel in range(n):
+        for y_kernel in range(n):
+            x_image = x - mid + x_kernel
+            y_image = y - mid + y_kernel
+            color = get_pixel(image, x_image , y_image)
+            kernel_value = get_kernel(kernel, x_kernel, y_kernel)
+            newcolor += color * kernel_value
+    return newcolor
+
 def correlate(image, kernel):
     """
     Compute the result of correlating the given image with the given kernel.
@@ -52,9 +75,20 @@ def correlate(image, kernel):
     This process should not mutate the input image; rather, it should create a
     separate structure to represent the output.
 
-    DESCRIBE YOUR KERNEL REPRESENTATION HERE
+    The kernel is a dictionary similar to the image dictionary.
+    kernel = {'size': n, flat_kernel: []}
+    The kernel['flat_kernel'] stores the nxn kernel matrix in row-major order.
     """
-    raise NotImplementedError
+    result = {
+        'height': image['height'],
+        'width': image['width'],
+        'pixels': [0] * image['height'] * image['width'],
+    }
+    for x in range(image['width']):
+        for y in range(image['height']):
+            newcolor = get_correlation(image, x, y, kernel)
+            set_pixel(result, x, y, newcolor)
+    return result
 
 
 def round_and_clip_image(image):
@@ -145,5 +179,6 @@ if __name__ == '__main__':
     TEST_DIRECTORY = os.path.dirname(__file__)
     im = load_image(os.path.join(TEST_DIRECTORY, 'test_images', 'centered_pixel.png'))
     print(im)
-    result = inverted(im)
+    kernel = {'size': 3, 'flat_kernel': [0, 1, 0, 0, 0, 0, 0, 0, 0]}
+    result = correlate(im, kernel)
     print(result)

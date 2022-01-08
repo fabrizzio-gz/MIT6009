@@ -101,6 +101,40 @@ def test_roundclip_1():
     lab.round_and_clip_image(input)
     compare_images(input, expected)
 
+def test_correlate_1():
+    image =  {
+        'height': 3,
+        'width': 3,
+        'pixels': [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    }
+    kernel = {
+        'size': 3,
+        'flat_kernel': [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    }
+    expected = {
+        'height': 3,
+        'width': 3,
+        'pixels': [9] * 9,
+    }
+    compare_images(lab.correlate(image, kernel), expected)
+
+def test_correlate_2():
+    image =  {
+        'height': 3,
+        'width': 3,
+        'pixels': [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    }
+    kernel = {
+        'size': 5,
+        'flat_kernel': [1] * 25
+    }
+    expected = {
+        'height': 3,
+        'width': 3,
+        'pixels': [25] * 9,
+    }
+    compare_images(lab.correlate(image, kernel), expected)
+
 
 @pytest.mark.parametrize("kernsize", [1, 3, 7])
 @pytest.mark.parametrize("fname", ['mushroom', 'twocats', 'chess'])

@@ -138,7 +138,60 @@ def blurred(image, n):
 
     return result
 
+def get_sharpkernel(n):
+    """
+    Returns a nxn sharp kernel of the form 2I - B
+    """
+    kernel =  {
+        'size': n,
+        'flat_kernel': [-1/n ** 2] * n ** 2
+    }
+    kernel['flat_kernel'][n ** 2 // 2] += 2
 
+    return kernel
+
+def sharpened(image, n):
+    """
+    Return a new image representing the result of applying an unshparp mask
+    of blurred kernel size n to the given input image.
+
+    S = 2I - B
+
+    This process should not mutate the input image; rather, it should create a
+    separate structure to represent the output.
+    """
+    sharpkernel = get_sharpkernel(n)
+
+    result = correlate(image, sharpkernel)
+
+    round_and_clip_image(result)
+
+    return result
+
+def edges(image):
+    """
+    Return a new image representing the result of sobel operator for edge
+    detection. Both a Kx and Ky correlation is performed. Each of 3x3.
+
+    This process should not mutate the input image; rather, it should create a
+    separate structure to represent the output.
+    """
+    kernel_x = {'size': 3, 'flat_kernel': [-1, 0, 1, -2, 0, 2, -1, 0, 1]}
+    result_x = correlate(image, kernel_x)
+    kernel_y = {'size': 3, 'flat_kernel': [-1, -2, -1, 0, 0, 0, 1, 2, 1]}
+    result_y = correlate(image, kernel_y)
+
+    result = { 
+        'width': image['width'],
+        'height': image['height'],    
+    }
+
+    result["pixels"] = list(map(lambda x, y: math.sqrt(x**2 + y**2),
+     result_x['pixels'], result_y['pixels']))
+    
+    round_and_clip_image(result)
+
+    return result
 
 # HELPER FUNCTIONS FOR LOADING AND SAVING IMAGES
 
@@ -188,8 +241,10 @@ if __name__ == '__main__':
     # generating images, etc.
     import os
     TEST_DIRECTORY = os.path.dirname(__file__)
-    im = load_image(os.path.join(TEST_DIRECTORY, 'test_images', 'centered_pixel.png'))
-    print(im)
-    kernel = {'size': 3, 'flat_kernel': [0, 1, 0, 0, 0, 0, 0, 0, 0]}
-    result = correlate(im, kernel)
-    print(result)
+    im = load_image(os.path.join(TEST_DIRECTORY, 'test_images', 'bluegill.png'))
+    kernel_x = {'size': 3, 'flat_kernel': [-1, 0, 1, -2, 0, 2, -1, 0, 1]}
+    result_x = correlate(im, kernel_x)
+    kernel_y = {'size': 3, 'flat_kernel': [-1, -2, -1, 0, 0, 0, 1, 2, 1]}
+    result_y = correlate(im, kernel_y)
+    save_image(result_x, 'output_x.png')
+    save_image(result_y, 'output_y.png')

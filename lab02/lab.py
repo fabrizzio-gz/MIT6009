@@ -184,7 +184,23 @@ def cumulative_energy_map(energy):
     the values in the 'pixels' array may not necessarily be in the range [0,
     255].
     """
-    raise NotImplementedError
+    width = energy['width']
+    height = energy['height']
+    cem = {
+        'width': width,
+        'height': height,
+        'pixels': energy['pixels'][:]
+    }
+
+    # Left top row untouched
+    for y in range(1, height):
+        for x in range(width):
+            current_value = lab1.get_pixel(cem, x, y)
+            adjacent_pixels = [lab1.get_pixel(
+                cem, x - i, y - 1) for i in [-1, 0, 1]]
+            lab1.set_pixel(cem, x, y, current_value + min(adjacent_pixels))
+
+    return cem
 
 
 def minimum_energy_seam(cem):

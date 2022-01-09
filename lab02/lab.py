@@ -155,7 +155,13 @@ def greyscale_image_from_color_image(image):
 
     Returns a greyscale image (represented as a dictionary).
     """
-    raise NotImplementedError
+    greyscale_pixels = [round(.299*r + .587*g + .114*b)
+                        for r, g, b in image['pixels']]
+    return {
+        'height': image['height'],
+        'width': image['width'],
+        'pixels': greyscale_pixels
+    }
 
 
 def compute_energy(grey):

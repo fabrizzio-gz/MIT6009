@@ -4,33 +4,33 @@
 # (except in the last part of the lab; see the lab writeup for details)
 import math
 from PIL import Image
+import lab1
 
 
 # CODE FROM LAB 1 (replace with your code)
 
 def inverted(image):
-    raise NotImplementedError
+    return lab1.inverted(image)
 
 
 def correlate(image, kernel):
-    raise NotImplementedError
+    return lab1.correlate(image, kernel)
 
 
 def round_and_clip_image(image):
-    raise NotImplementedError
+    return lab1.round_and_clip_image(image)
 
 
 def blurred(image, n):
-    raise NotImplementedError
+    return lab1.blurred(image, n)
 
 
 def sharpened(image, n):
-    raise NotImplementedError
+    return lab1.sharpened(image, n)
 
 
 def edges(image):
-    raise NotImplementedError
-
+    return lab1.edges(image)
 
 # LAB 2 FILTERS
 

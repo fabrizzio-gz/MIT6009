@@ -12,3 +12,4 @@
 
 - [x] Color filter from grey filter
 - [x] Blur/sharpen filters
+- [x] Filter cascade

@@ -127,7 +127,12 @@ def filter_cascade(filters):
     single filter such that applying that filter to an image produces the same
     output as applying each of the individual ones in turn.
     """
-    raise NotImplementedError
+    def apply_filters(image):
+        new_img = image.copy()
+        for filter in filters:
+            new_img = filter(new_img)
+        return new_img
+    return apply_filters
 
 
 # SEAM CARVING

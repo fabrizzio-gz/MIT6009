@@ -203,13 +203,41 @@ def cumulative_energy_map(energy):
     return cem
 
 
+def get_flat_index(x, y, width):
+    """
+    Given indices (x, y) of a matrix of size width x height, returns the
+    corresponding index of the flattened array in row-major order.
+    """
+    return y*width + x
+
+
 def minimum_energy_seam(cem):
     """
     Given a cumulative energy map, returns a list of the indices into the
     'pixels' list that correspond to pixels contained in the minimum-energy
     seam (computed as described in the lab 2 writeup).
     """
-    raise NotImplementedError
+    remove_indices = []
+    width = cem['width']
+    height = cem['height']
+    cem_pixels = cem['pixels']
+
+    # Get bottom of min seam
+    bottom: list = cem_pixels[-width:]
+    x_bottom = bottom.index(min(bottom))
+    remove_indices.append(get_flat_index(x_bottom, height - 1, width))
+
+    x_min = x_bottom
+    for y in reversed(range(height - 1)):
+        # Get (x, value) array of adjacent pixels on row
+        adjacent_pixels = [(x_min + i, lab1.get_pixel(cem, x_min + i, y))
+                           for i in [-1, 0, 1]]
+        (x_min, _) = min(adjacent_pixels, key=lambda x: x[1])
+        # Crop x_min between 0 and width - 1
+        x_min = min(max(0, x_min), width - 1)
+        remove_indices.append(get_flat_index(x_min, y, width))
+
+    return remove_indices
 
 
 def image_without_seam(image, seam):
@@ -301,4 +329,6 @@ if __name__ == '__main__':
     # code in this block will only be run when you explicitly run your script,
     # and not when the tests are being run.  this is a good place for
     # generating images, etc.
-    pass
+    cem = {'width': 9, 'height': 4, 'pixels': [160, 160, 0, 28, 0, 28, 0, 160, 160, 415, 218, 10, 22, 14,
+                                               22, 10, 218, 415, 473, 265, 40, 10, 28, 10, 40, 265, 473, 520, 295, 41, 32, 10, 32, 41, 295, 520]}
+    print(minimum_energy_seam(cem))

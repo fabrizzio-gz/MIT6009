@@ -40,9 +40,12 @@ def actors_connecting_films(transformed_data, film1, film2):
 
 
 if __name__ == '__main__':
-    with open('resources/small.pickle', 'rb') as f:
+    with open('resources/tiny.pickle', 'rb') as f:
         smalldb = pickle.load(f)
-
+    with open('resources/names.pickle', 'rb') as f:
+        names = pickle.load(f)
+    print(smalldb)
+    print(names)
     # additional code here will be run only when lab.py is invoked directly
     # (not when imported from test.py), so this is a good place to put code
     # used, for example, to generate the results for the online questions.

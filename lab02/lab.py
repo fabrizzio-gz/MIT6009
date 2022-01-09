@@ -35,13 +35,70 @@ def edges(image):
 # LAB 2 FILTERS
 
 
+def extract_rgb(image):
+    """
+    Given an r, g, b image, returns a tuple of single color
+    images. Each similar to a greyscale image
+    """
+    r = {
+        'height': image['height'],
+        'width': image['width'],
+        'pixels': []
+    }
+
+    g = {
+        'height': image['height'],
+        'width': image['width'],
+        'pixels': []
+    }
+
+    b = {
+        'height': image['height'],
+        'width': image['width'],
+        'pixels': []
+    }
+
+    for pixel_r, pixel_g, pixel_b in image['pixels']:
+        r['pixels'].append(pixel_r)
+        g['pixels'].append(pixel_g)
+        b['pixels'].append(pixel_b)
+
+    return r, g, b
+
+
+def make_rgb(red_image, green_image, blue_image):
+    """
+    Given images representing the red, green, and blue channels of the
+    same image, returns the composition of them into a single colored
+    image.
+    """
+    image = {
+        'height': red_image['height'],
+        'width': red_image['width']
+    }
+
+    image['pixels'] = [(r, g, b) for r, g, b in
+                       zip(red_image['pixels'], green_image['pixels'], blue_image['pixels'])]
+
+    return image
+
+
 def color_filter_from_greyscale_filter(filt):
     """
     Given a filter that takes a greyscale image as input and produces a
     greyscale image as output, returns a function that takes a color image as
     input and produces the filtered color image.
     """
-    raise NotImplementedError
+    def color_filter(image):
+        red_image, green_image, blue_image = extract_rgb(image)
+        filtered_images = []
+        for source_image in [red_image, green_image, blue_image]:
+            filtered_images.append(filt(source_image))
+
+        new_color_image = make_rgb(*filtered_images)
+        return new_color_image
+
+    return color_filter
 
 
 def make_blur_filter(n):

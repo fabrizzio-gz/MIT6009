@@ -7,3 +7,7 @@
 - [x] Blurring
 - [x] Sharpening
 - [x] Edge detection
+
+## Lab02: Image Processing: Part II
+
+- [x] Color filter from grey filter

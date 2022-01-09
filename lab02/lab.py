@@ -247,7 +247,17 @@ def image_without_seam(image, seam):
     pixels from the original image except those corresponding to the locations
     in the given list.
     """
-    raise NotImplementedError
+    pixels = image['pixels']
+    new_pixels = []
+    for i in range(len(pixels)):
+        if i not in seam:
+            new_pixels.append(pixels[i])
+
+    return {
+        'width': image['width'] - 1,
+        'height': image['height'],
+        'pixels': new_pixels
+    }
 
 
 # HELPER FUNCTIONS FOR LOADING AND SAVING COLOR IMAGES

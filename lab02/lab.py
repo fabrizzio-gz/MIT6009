@@ -171,7 +171,7 @@ def compute_energy(grey):
 
     Returns a greyscale image (represented as a dictionary).
     """
-    raise NotImplementedError
+    return edges(grey)
 
 
 def cumulative_energy_map(energy):

@@ -12,7 +12,35 @@ import pickle
 
 
 def transform_data(raw_data):
-    return raw_data
+    """
+    Given a list of tubles (id1, id2, movid), returns a dictionary
+    where the key is the actor id and the value is another dictionary
+    of the form: { 'actors': set of all idx, 'actor-movie': set of all
+    tuples (idx, movid), 'movies': set of all movid}, where idx acted 
+    with actor id on movie movid. 
+    """
+    def create_actor_dict():
+        return {
+            'actors': set(),
+            'actor-movie': set(),
+            'movies': set()
+        }
+
+    def add_data(actor_dict, selfid, other_actor_id, movid):
+        actor_dict['actors'].add(selfid)
+        actor_dict['actors'].add(other_actor_id)
+        actor_dict['actor-movie'].add((other_actor_id, movid))
+        actor_dict['movies'].add(movid)
+
+    transformed_data = {}
+    for id1, id2, movid in raw_data:
+        if not transformed_data.get(id1):
+            transformed_data[id1] = create_actor_dict()
+        if not transformed_data.get(id2):
+            transformed_data[id2] = create_actor_dict()
+        add_data(transformed_data[id1], id1, id2, movid)
+        add_data(transformed_data[id2], id2, id1, movid)
+    return transformed_data
 
 
 def acted_together(transformed_data, actor_id_1, actor_id_2):
@@ -42,10 +70,16 @@ def actors_connecting_films(transformed_data, film1, film2):
 if __name__ == '__main__':
     with open('resources/tiny.pickle', 'rb') as f:
         smalldb = pickle.load(f)
-    with open('resources/names.pickle', 'rb') as f:
-        names = pickle.load(f)
     print(smalldb)
-    print(names)
+    print(transform_data(smalldb))
+    """ with open('resources/names.pickle', 'rb') as f:
+        codes: dict = pickle.load(f)
+    codes['Jose Antonio Donato'] # 1223511
+    names = {}
+    for key, value in codes.items():
+        names[value] = key
+    names[31705] # Sam Edwards """
+
     # additional code here will be run only when lab.py is invoked directly
     # (not when imported from test.py), so this is a good place to put code
     # used, for example, to generate the results for the online questions.

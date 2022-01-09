@@ -144,7 +144,19 @@ def seam_carving(image, ncols):
     Starting from the given image, use the seam carving technique to remove
     ncols (an integer) columns from the image.
     """
-    raise NotImplementedError
+    new_img = {
+        'width': image['width'],
+        'height': image['height'],
+        'pixels': image['pixels'][:]
+    }
+    for _ in range(ncols):
+        seam = minimum_energy_seam(
+            cumulative_energy_map(
+                compute_energy(
+                    greyscale_image_from_color_image(new_img))))
+        new_img = image_without_seam(new_img, seam)
+
+    return new_img
 
 
 # Optional Helper Functions for Seam Carving

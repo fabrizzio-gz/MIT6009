@@ -11,3 +11,4 @@
 ## Lab02: Image Processing: Part II
 
 - [x] Color filter from grey filter
+- [x] Blur/sharpen filters

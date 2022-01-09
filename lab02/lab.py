@@ -102,11 +102,23 @@ def color_filter_from_greyscale_filter(filt):
 
 
 def make_blur_filter(n):
-    raise NotImplementedError
+    """
+    Given a size n, returns a blur filter function of kernel size
+    n x n.
+    """
+    def blur_filter(image):
+        return blurred(image, n)
+    return blur_filter
 
 
 def make_sharpen_filter(n):
-    raise NotImplementedError
+    """
+    Given a size n, returns a sharpen filter function of kernel size
+    n x n.
+    """
+    def sharpen_filter(image):
+        return sharpened(image, n)
+    return sharpen_filter
 
 
 def filter_cascade(filters):

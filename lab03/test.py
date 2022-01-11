@@ -248,6 +248,19 @@ def test_bacon_path_06():
     assert result == expected
 
 
+def test_tiny_actor_to_actor_path_01():
+    # Actor path, tiny database
+    actor_1 = 1640
+    actor_2 = 4724
+    len_expected = 2
+
+    first_result = lab.actor_to_actor_path(db_tiny, actor_1, actor_2)
+    second_result = lab.actor_to_actor_path(db_tiny, actor_1, actor_2)
+
+    check_valid_path(fset_tiny, first_result, actor_1, actor_2, len_expected)
+    check_valid_path(fset_tiny, second_result, actor_1, actor_2, len_expected)
+
+
 def test_actor_to_actor_path_01():
     # Actor path, large database, length of 7 (8 actors, 7 movies)
     actor_1 = 1345462

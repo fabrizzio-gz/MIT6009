@@ -146,7 +146,24 @@ def actor_path(transformed_data, actor_id_1, goal_test_function):
 
 
 def actors_connecting_films(transformed_data, film1, film2):
-    raise NotImplementedError("Implement me!")
+    """
+    Given a tranformed data structure and two movie ids, returns
+    the shortest possible list of actor ids that acted together. 
+    The first actor id acted in film1 and the last actor id in the 
+    list acted in film2.
+    """
+    film1_actors = set()
+    film2_actors = set()
+    for actor in transformed_data:
+        if film1 in transformed_data[actor]["movies"]:
+            film1_actors.add(actor)
+        if film2 in transformed_data[actor]["movies"]:
+            film2_actors.add(actor)
+    paths = []
+    for actor1 in film1_actors:
+        for actor2 in film2_actors:
+            paths.append(actor_to_actor_path(transformed_data, actor1, actor2))
+    return sorted(paths, key=lambda path: len(path))[0]
 
 
 if __name__ == '__main__':

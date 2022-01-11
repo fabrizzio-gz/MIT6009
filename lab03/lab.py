@@ -49,6 +49,8 @@ def acted_together(transformed_data, actor_id_1, actor_id_2):
     Given the transformed data, and two actor ids, return True if
     both actors acted together. False otherwise.
     """
+    if actor_id_1 == actor_id_2:
+        return True
     actor_dict = transformed_data.get(actor_id_1)
     if actor_dict:
         return actor_id_2 in (transformed_data.get(actor_id_1, set())['actors'])

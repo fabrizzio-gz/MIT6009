@@ -20,3 +20,4 @@
 
 - [x] Acted together
 - [x] Bacon number
+- [x] Bacon path

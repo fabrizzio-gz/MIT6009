@@ -82,7 +82,32 @@ def actors_with_bacon_number(transformed_data, n):
 
 
 def bacon_path(transformed_data, actor_id):
-    raise NotImplementedError("Implement me!")
+    """
+    Given a transformed data structure and an actor id, returns the
+    shortest path between Kevin Bacon (4724) and actor_id as a list
+    of actor ids between them (including Kevin Bacon id and actor_id).
+    """
+    path_list = [[4724]]
+    path_index = 0
+    previous_nodes = {4724}
+    while path_index < len(path_list):
+        current_path = path_list[path_index]
+        last_node = current_path[-1]
+        next_nodes = transformed_data[last_node]["actors"]
+        if actor_id in next_nodes:
+            current_path.append(actor_id)
+            return current_path
+        # Add new paths
+        for next_node in next_nodes:
+            if not next_node in previous_nodes:
+                new_path = current_path[:]
+                new_path.append(next_node)
+                path_list.append(new_path)
+                # To avoid backtracking
+                previous_nodes.add(next_node)
+        path_index += 1
+    # No path is found
+    return None
 
 
 def actor_to_actor_path(transformed_data, actor_id_1, actor_id_2):
@@ -105,7 +130,8 @@ if __name__ == '__main__':
         db = pickle.load(f)
     # print(db)
     transformed_data = transform_data(db)
-    actors_with_bacon_number(transformed_data, 2)
+    # actors_with_bacon_number(transformed_data, 2)
+    bacon_path(transformed_data, 1640)
     # Acted together questions
     # with open('resources/names.pickle', 'rb') as f:
     #    names = pickle.load(f)

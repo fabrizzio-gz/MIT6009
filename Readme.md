@@ -23,3 +23,4 @@
 - [x] Bacon path
 - [x] Actor to actor path
 - [x] Movie paths
+- [x] Generalized path finder (actor path)

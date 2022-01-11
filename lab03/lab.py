@@ -158,6 +158,20 @@ if __name__ == '__main__':
     transformed_data = transform_data(db)
     # actors_with_bacon_number(transformed_data, 2)
     print(actor_to_actor_path(transformed_data, 1640, 4724))
+    # Actor to actor path question
+    # filename = os.path.join(current_dir, 'resources', 'large.pickle')
+    # with open(filename, 'rb') as f:
+    #     db = pickle.load(f)
+    # with open('resources/names.pickle', 'rb') as f:
+    #     names = pickle.load(f)
+    # codes = {}
+    # for key, value in names.items():
+    #     codes[value] = key
+    # transformed_data = transform_data(db)
+    # path = actor_to_actor_path(
+    #     transformed_data, names["Nancy Alexander"], names["John Aquino"])
+    # print([codes[actor] for actor in path])
+    #['Nancy Alexander', 'Michael Weaver', 'Wes Deitrick', 'David DeCoteau', 'Karen Russell', 'Barry Levinson', 'John Aquino']
     # Acted together questions
     # with open('resources/names.pickle', 'rb') as f:
     #    names = pickle.load(f)

@@ -111,7 +111,33 @@ def bacon_path(transformed_data, actor_id):
 
 
 def actor_to_actor_path(transformed_data, actor_id_1, actor_id_2):
-    raise NotImplementedError("Implement me!")
+    """
+    Given a transformed data structure, and two actor ids, returns 
+    the shortest path, as a list, from the first actor to the second.
+    """
+    path_list = [[actor_id_1]]
+    path_index = 0
+    previous_nodes = {actor_id_1}
+    if actor_id_1 == actor_id_2:
+        return path_list[0]
+    while path_index < len(path_list):
+        current_path = path_list[path_index]
+        last_node = current_path[-1]
+        next_nodes = transformed_data[last_node]["actors"]
+        if actor_id_2 in next_nodes:
+            current_path.append(actor_id_2)
+            return current_path
+        # Add new paths
+        for next_node in next_nodes:
+            if not next_node in previous_nodes:
+                new_path = current_path[:]
+                new_path.append(next_node)
+                path_list.append(new_path)
+                # To avoid backtracking
+                previous_nodes.add(next_node)
+        path_index += 1
+    # No path is found
+    return None
 
 
 def actor_path(transformed_data, actor_id_1, goal_test_function):
@@ -131,7 +157,7 @@ if __name__ == '__main__':
     # print(db)
     transformed_data = transform_data(db)
     # actors_with_bacon_number(transformed_data, 2)
-    bacon_path(transformed_data, 1640)
+    print(actor_to_actor_path(transformed_data, 1640, 4724))
     # Acted together questions
     # with open('resources/names.pickle', 'rb') as f:
     #    names = pickle.load(f)

@@ -85,6 +85,42 @@ def test_acted_together_additional(test_num):
     _run_pickled_together_test(test_num)
 
 
+def test_tiny_bacon_number_0():
+    # Actors with Bacon number of 0 on tiny db
+    n = 0
+    expected = {4724}
+    first_result = lab.actors_with_bacon_number(db_tiny, n)
+    assert isinstance(first_result, set)
+    assert first_result == expected
+
+
+def test_tiny_bacon_number_1():
+    # Actors with Bacon number of 1 on tiny db
+    n = 1
+    expected = {1532, 2876}
+    first_result = lab.actors_with_bacon_number(db_tiny, n)
+    assert isinstance(first_result, set)
+    assert first_result == expected
+
+
+def test_tiny_bacon_number_2():
+    # Actors with Bacon number of 2 on tiny db
+    n = 2
+    expected = {1640}
+    first_result = lab.actors_with_bacon_number(db_tiny, n)
+    assert isinstance(first_result, set)
+    assert first_result == expected
+
+
+def test_tiny_bacon_number_3():
+    # Actors with Bacon number of 3 on tiny db
+    n = 3
+    expected = set()
+    first_result = lab.actors_with_bacon_number(db_tiny, n)
+    assert isinstance(first_result, set)
+    assert first_result == expected
+
+
 def test_bacon_number_01():
     # Actors with Bacon number of 2
     n = 2

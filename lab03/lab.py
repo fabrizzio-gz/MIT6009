@@ -95,29 +95,7 @@ def actor_to_actor_path(transformed_data, actor_id_1, actor_id_2):
     Given a transformed data structure, and two actor ids, returns 
     the shortest path, as a list, from the first actor to the second.
     """
-    path_list = [[actor_id_1]]
-    path_index = 0
-    previous_nodes = {actor_id_1}
-    if actor_id_1 == actor_id_2:
-        return path_list[0]
-    while path_index < len(path_list):
-        current_path = path_list[path_index]
-        last_node = current_path[-1]
-        next_nodes = transformed_data[last_node]["actors"]
-        if actor_id_2 in next_nodes:
-            current_path.append(actor_id_2)
-            return current_path
-        # Add new paths
-        for next_node in next_nodes:
-            if not next_node in previous_nodes:
-                new_path = current_path[:]
-                new_path.append(next_node)
-                path_list.append(new_path)
-                # To avoid backtracking
-                previous_nodes.add(next_node)
-        path_index += 1
-    # No path is found
-    return None
+    return actor_path(transformed_data, actor_id_1, lambda id: id == actor_id_2)
 
 
 def movie_path(transformed_data, actor1, actor2):

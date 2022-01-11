@@ -87,27 +87,7 @@ def bacon_path(transformed_data, actor_id):
     shortest path between Kevin Bacon (4724) and actor_id as a list
     of actor ids between them (including Kevin Bacon id and actor_id).
     """
-    path_list = [[4724]]
-    path_index = 0
-    previous_nodes = {4724}
-    while path_index < len(path_list):
-        current_path = path_list[path_index]
-        last_node = current_path[-1]
-        next_nodes = transformed_data[last_node]["actors"]
-        if actor_id in next_nodes:
-            current_path.append(actor_id)
-            return current_path
-        # Add new paths
-        for next_node in next_nodes:
-            if not next_node in previous_nodes:
-                new_path = current_path[:]
-                new_path.append(next_node)
-                path_list.append(new_path)
-                # To avoid backtracking
-                previous_nodes.add(next_node)
-        path_index += 1
-    # No path is found
-    return None
+    return actor_to_actor_path(transformed_data, 4724, actor_id)
 
 
 def actor_to_actor_path(transformed_data, actor_id_1, actor_id_2):

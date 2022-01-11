@@ -44,7 +44,14 @@ def transform_data(raw_data):
 
 
 def acted_together(transformed_data, actor_id_1, actor_id_2):
-    raise NotImplementedError("Implement me!")
+    """
+    Given the transformed data, and two actor ids, return True if
+    both actors acted together. False otherwise.
+    """
+    actor_dict = transformed_data.get(actor_id_1)
+    if actor_dict:
+        return actor_id_2 in (transformed_data.get(actor_id_1, set())['actors'])
+    return False
 
 
 def actors_with_bacon_number(transformed_data, n):
@@ -68,10 +75,17 @@ def actors_connecting_films(transformed_data, film1, film2):
 
 
 if __name__ == '__main__':
-    with open('resources/tiny.pickle', 'rb') as f:
+    with open('resources/small.pickle', 'rb') as f:
         smalldb = pickle.load(f)
-    print(smalldb)
-    print(transform_data(smalldb))
+    transformed_data = transform_data(smalldb)
+    with open('resources/names.pickle', 'rb') as f:
+        names = pickle.load(f)
+    actor1 = names["James Caan"]
+    actor2 = names["David Stevens"]
+    print(acted_together(transformed_data, actor1, actor2))
+    actor1 = names["Natascha McElhone"]
+    actor2 = names["Rose Byrne"]
+    print(acted_together(transformed_data, actor1, actor2))
     """ with open('resources/names.pickle', 'rb') as f:
         codes: dict = pickle.load(f)
     codes['Jose Antonio Donato'] # 1223511

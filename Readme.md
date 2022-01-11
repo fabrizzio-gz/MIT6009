@@ -15,3 +15,7 @@
 - [x] Filter cascade
 - [x] Seam carving
 - [ ] Something of your own
+
+## Lab03: Bacon Number
+
+- [x] Acted together

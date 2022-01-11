@@ -9,6 +9,7 @@ import pytest
 
 TEST_DIRECTORY = os.path.dirname(__file__)
 
+
 def setup_module(module):
     """
     This function loads the various databases.  It will be run once every time
@@ -23,17 +24,40 @@ def setup_module(module):
             setattr(module, f'fset_{i}', {frozenset(i[:-1]) for i in raw})
 
 
+def test_tiny_acted_together_01():
+    # Simple test, two actors who acted together on tiny db
+    actor2 = 2876
+    actor1 = 4724
+    assert lab.acted_together(db_tiny, actor1, actor2)
+
+
+def test_tiny_acted_together_02():
+    # Simple test, two actors who acted together on tiny db
+    actor2 = 1532
+    actor1 = 4724
+    assert lab.acted_together(db_tiny, actor1, actor2)
+
+
+def test_tiny_acted_together_03():
+    # Simple test, two actors who acted together on tiny db
+    actor1 = 1640
+    actor2 = 1532
+    assert not lab.acted_together(db_tiny, actor1, actor2)
+
+
 def test_acted_together_01():
     # Simple test, two actors who acted together
     actor1 = 4724
     actor2 = 9210
     assert lab.acted_together(db_small, actor1, actor2)
 
+
 def test_acted_together_02():
     # Simple test, two actors who had not acted together
     actor1 = 4724
     actor2 = 16935
     assert not lab.acted_together(db_small, actor1, actor2)
+
 
 def test_acted_together_03():
     # Simple test, same actor
@@ -77,6 +101,7 @@ def test_bacon_number_01():
     assert isinstance(second_result, set)
     assert second_result == expected
 
+
 def test_bacon_number_02():
     # Actors with Bacon number of 3
     n = 3
@@ -97,18 +122,23 @@ def test_bacon_number_02():
     assert isinstance(second_result, set)
     assert second_result == expected
 
+
 def test_bacon_number_03():
     # random large Bacon number
     N = random.randint(50, 100)
     k = random.randint(7, 30)
-    assert len(lab.actors_with_bacon_number(lab.transform_data(make_bacon_tree(N, k)), N)) == k
+    assert len(lab.actors_with_bacon_number(
+        lab.transform_data(make_bacon_tree(N, k)), N)) == k
+
 
 def test_bacon_number_04():
     # random graph, Bacon number with no people
     N = random.randint(5, 10)
     k = random.randint(4, 7)
-    assert len(lab.actors_with_bacon_number(lab.transform_data(make_bacon_tree(N, k)), int(1e20))) == 0
-    assert len(lab.actors_with_bacon_number(lab.transform_data(make_bacon_tree(N, k)), int(1e20))) == 0
+    assert len(lab.actors_with_bacon_number(
+        lab.transform_data(make_bacon_tree(N, k)), int(1e20))) == 0
+    assert len(lab.actors_with_bacon_number(
+        lab.transform_data(make_bacon_tree(N, k)), int(1e20))) == 0
 
 
 def test_bacon_path_01():
@@ -122,6 +152,7 @@ def test_bacon_path_01():
     second_result = lab.bacon_path(db_small, actor_id)
     assert second_result == expected
 
+
 def test_bacon_path_02():
     # Bacon path, small database, length of 3 (4 actors, 3 movies)
     actor_id = 46866
@@ -133,6 +164,7 @@ def test_bacon_path_02():
     check_valid_path(fset_small, first_result, 4724, actor_id, len_expected)
     check_valid_path(fset_small, second_result, 4724, actor_id, len_expected)
 
+
 def test_bacon_path_03():
     # Bacon path, large database, length of 2 (3 actors, 2 movies)
     actor_id = 1204
@@ -141,6 +173,7 @@ def test_bacon_path_03():
 
     check_valid_path(fset_large, result, 4724, actor_id, len_expected)
 
+
 def test_bacon_path_04():
     # Bacon path, large database, length of 4 (5 actors, 4 movies)
     actor_id = 197897
@@ -148,6 +181,7 @@ def test_bacon_path_04():
     result = lab.bacon_path(db_large, actor_id)
 
     check_valid_path(fset_large, result, 4724, actor_id, len_expected)
+
 
 def test_bacon_path_05():
     # Bacon path, large database, length of 6 (7 actors, 6 movies)
@@ -159,6 +193,7 @@ def test_bacon_path_05():
     len_result = -1 if result is None else len(result)-1
 
     check_valid_path(fset_large, result, 4724, actor_id, len_expected)
+
 
 def test_bacon_path_06():
     # Bacon path, large database, does not exist
@@ -190,6 +225,7 @@ def test_actor_to_actor_path_02():
     result = lab.actor_to_actor_path(db_large, actor_1, actor_2)
     check_valid_path(fset_large, result, actor_1, actor_2, len_expected)
 
+
 def test_actor_to_actor_path_03():
     # Bacon path, large database, length of 7 (8 actors, 7 movies)
     actor_1 = 43011
@@ -199,6 +235,7 @@ def test_actor_to_actor_path_03():
     result = lab.actor_to_actor_path(db_large, actor_1, actor_2)
     check_valid_path(fset_large, result, actor_1, actor_2, len_expected)
 
+
 def test_actor_to_actor_path_04():
     # Bacon path, large database, does not exist
     actor_1 = 43011
@@ -206,6 +243,7 @@ def test_actor_to_actor_path_04():
     result = lab.actor_to_actor_path(db_large, actor_1, actor_2)
 
     assert result is None
+
 
 def test_actor_to_actor_path_05():
     # actor path that exists
@@ -216,6 +254,7 @@ def test_actor_to_actor_path_05():
 
     check_valid_path(fset_large, p, x, y, len(e)-1)
 
+
 def test_actor_to_actor_path_06():
     # actor path that exists
     e = [184581, 27111, 11086, 170882]
@@ -224,16 +263,18 @@ def test_actor_to_actor_path_06():
     p = lab.actor_to_actor_path(db_large, x, y)
     check_valid_path(fset_large, p, x, y, len(e)-1)
 
+
 def test_actor_to_actor_path_07():
     # actor path that exists
     e = list(range(700))
     random.shuffle(e)
-    data = [(i, j, 0) for i,j in zip(e, e[1:])]
+    data = [(i, j, 0) for i, j in zip(e, e[1:])]
     random.shuffle(data)
     x = e[0]
     y = e[-1]
     p = lab.actor_to_actor_path(lab.transform_data(data), x, y)
     check_valid_path({frozenset(i[:-1]) for i in data}, p, x, y, len(e)-1)
+
 
 def test_actor_to_actor_path_08():
     x = 1234567890
@@ -242,6 +283,7 @@ def test_actor_to_actor_path_08():
     data.append((x, y, 0))
     p = lab.actor_to_actor_path(lab.transform_data(data), 4724, y)
     assert p is None
+
 
 def _run_pickled_a2a_path_test(n):
     filename = os.path.join(
@@ -266,10 +308,12 @@ def test_actor_path_01():
     result = lab.actor_path(db_large, 975260, lambda p: False)
     assert result is None
 
+
 def test_actor_path_02():
     result = lab.actor_path(db_large, 975260, lambda p: True)
     result2 = lab.actor_path(db_large, 975260, lambda p: p == 975260)
     assert result == result2 == [975260]
+
 
 def test_actor_path_03():
     ppl = {536472, 44795, 240045, 19534}
@@ -280,14 +324,18 @@ def test_actor_path_03():
     check_valid_path(fset_large, result1, 10526, None, 3)
     assert result2[-1] in {536472, 44795}
 
+
 def test_actor_path_04():
-    result = lab.actor_path(db_large, 152597, lambda p: p in {129507, 1400266, 1355798})
+    result = lab.actor_path(db_large, 152597, lambda p: p in {
+                            129507, 1400266, 1355798})
     check_valid_path(fset_large, result, 152597, None, 6)
     assert result[-1] in {1400266, 1355798}
+
 
 def test_actor_path_05():
     result = lab.actor_path(db_large, 26473, lambda p: p in {105656, 118946})
     check_valid_path(fset_large, result, 26473, 118946, 1)
+
 
 def test_actor_path_06():
     result = lab.actor_path(db_large, 129507, lambda p: p == 152597)
@@ -296,6 +344,7 @@ def test_actor_path_06():
 
 def test_movie_path_01():
     check_connected_movie_path(18860, 75181, 1)
+
 
 def test_movie_path_02():
     check_connected_movie_path(142416, 44521, 4)
@@ -312,7 +361,8 @@ def check_valid_path(f, p, s, e, l):
     assert lp == l, f"expected a path of length {l} between {s} and {e}, got {lp}"
     assert s is None or p[0] == s, f"path does not start with {s}"
     assert e is None or p[-1] == e, f"path does not end with {e}"
-    assert all(frozenset(i) in f for i in zip(p, p[1:])), f"invalid path returned"
+    assert all(frozenset(i) in f for i in zip(
+        p, p[1:])), f"invalid path returned"
 
 
 def check_connected_movie_path(m1, m2, expected_length):
@@ -337,7 +387,7 @@ def make_bacon_tree(L, n=10):
     id_set = 2
     path = [4724] + random_number_list(L, i=1)
     n -= 1
-    out = set((i,j) for i,j in zip(path, path[1:]))
+    out = set((i, j) for i, j in zip(path, path[1:]))
     while n > 0:
         point = random.choice(range(len(path)-1))
         d = L - point
@@ -345,10 +395,10 @@ def make_bacon_tree(L, n=10):
             continue
         newpath = random_number_list(d, i=id_set)
         p = [path[point]] + newpath
-        out |= set((i,j) for i,j in zip(p, p[1:]))
+        out |= set((i, j) for i, j in zip(p, p[1:]))
         id_set += 1
         n -= 1
-    return [(i, j, 0) for i,j in out]
+    return [(i, j, 0) for i, j in out]
 
 
 if __name__ == '__main__':
@@ -379,12 +429,12 @@ if __name__ == '__main__':
         def pytest_runtest_logreport(self, report):
             if report.when != 'call':
                 return
-            self.results.setdefault(report.outcome, []).append(report.head_line)
+            self.results.setdefault(
+                report.outcome, []).append(report.head_line)
 
         def pytest_collection_finish(self, session):
             if self.gather:
                 self.alltests = [i.name for i in session.items]
-
 
     pytest_args = ['-v', __file__]
 

@@ -27,7 +27,8 @@ def transform_data(raw_data):
         }
 
     def add_data(actor_dict, selfid, other_actor_id, movid):
-        actor_dict['actors'].add(selfid)
+        if selfid == other_actor_id:
+            return
         actor_dict['actors'].add(other_actor_id)
         actor_dict['actor-movie'].add((other_actor_id, movid))
         actor_dict['movies'].add(movid)

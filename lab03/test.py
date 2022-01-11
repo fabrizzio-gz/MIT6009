@@ -362,6 +362,15 @@ def test_actor_to_actor_path_additional(test_num):
     _run_pickled_a2a_path_test(test_num)
 
 
+def test_actor_movie_path():
+    actor1 = 4724  # Kevin Bacon
+    actor2 = 1204  # Julia Roberts
+
+    expected = [94671, 18402]
+    result = lab.movie_path(db_large, actor1, actor2)
+    assert result == expected
+
+
 def test_actor_path_01():
     result = lab.actor_path(db_large, 975260, lambda p: False)
     assert result is None

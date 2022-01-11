@@ -120,6 +120,21 @@ def actor_to_actor_path(transformed_data, actor_id_1, actor_id_2):
     return None
 
 
+def movie_path(transformed_data, actor1, actor2):
+    """
+    Given a transformed data structure, and two actor ids, returns a 
+    list of movie ids that connect the first actor to the second.
+    """
+    actor_path = actor_to_actor_path(transformed_data, actor1, actor2)
+    print(actor_path)
+    movie_ids = []
+    for actor1, actor2 in zip(actor_path[:-1], actor_path[1:]):
+        _, movie_id = next(filter(
+            lambda actor_movie: actor_movie[0] == actor2, transformed_data[actor1]["actor-movie"]))
+        movie_ids.append(movie_id)
+    return movie_ids
+
+
 def actor_path(transformed_data, actor_id_1, goal_test_function):
     raise NotImplementedError("Implement me!")
 
@@ -131,13 +146,13 @@ def actors_connecting_films(transformed_data, film1, film2):
 if __name__ == '__main__':
     import os
     current_dir = os.path.dirname(__file__)
-    filename = os.path.join(current_dir, 'resources', 'tiny.pickle')
+    filename = os.path.join(current_dir, 'resources', 'large.pickle')
     with open(filename, 'rb') as f:
         db = pickle.load(f)
     # print(db)
     transformed_data = transform_data(db)
     # actors_with_bacon_number(transformed_data, 2)
-    print(actor_to_actor_path(transformed_data, 1640, 4724))
+    print(movie_path(transformed_data, 4724, 1204))
     # Actor to actor path question
     # filename = os.path.join(current_dir, 'resources', 'large.pickle')
     # with open(filename, 'rb') as f:

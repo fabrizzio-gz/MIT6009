@@ -103,7 +103,7 @@ if __name__ == '__main__':
     filename = os.path.join(current_dir, 'resources', 'tiny.pickle')
     with open(filename, 'rb') as f:
         db = pickle.load(f)
-    print(db)
+    # print(db)
     transformed_data = transform_data(db)
     actors_with_bacon_number(transformed_data, 2)
     # Acted together questions
@@ -115,6 +115,22 @@ if __name__ == '__main__':
     # actor1 = names["Natascha McElhone"]
     # actor2 = names["Rose Byrne"]
     # print(acted_together(transformed_data, actor1, actor2))
+    # Bacon Number question
+    # current_dir = os.path.dirname(__file__)
+    #filename = os.path.join(current_dir, 'resources', 'large.pickle')
+    # with open(filename, 'rb') as f:
+    #    db = pickle.load(f)
+    # with open('resources/names.pickle', 'rb') as f:
+    #     names = pickle.load(f)
+    # codes = {}
+    # for key, value in names.items():
+    #     codes[value] = key
+    # transformed_data = transform_data(db)
+    # actor_ids = actors_with_bacon_number(transformed_data, 6)
+    # print(actor_ids)  # {1367972, 1345461, 1345462, 1338716}
+    # actor_names = [codes[actor_id] for actor_id in actor_ids]
+    # print(actor_names)
+    # ['Vjeran Tin Turk', 'Anton Radacic', 'Iva Ilakovac', 'Sven Batinic']
     """ with open('resources/names.pickle', 'rb') as f:
         codes: dict = pickle.load(f)
     codes['Jose Antonio Donato'] # 1223511

@@ -19,3 +19,4 @@
 ## Lab03: Bacon Number
 
 - [x] Acted together
+- [x] Bacon number

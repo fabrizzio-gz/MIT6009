@@ -58,7 +58,27 @@ def acted_together(transformed_data, actor_id_1, actor_id_2):
 
 
 def actors_with_bacon_number(transformed_data, n):
-    raise NotImplementedError("Implement me!")
+    """
+    Given a transformed data object, and an integer n, returns the
+    set of actors with Bacon number n.
+    """
+    actors = {4724}
+    # Start with Kevin Bacon as the only node
+    nodes = {4724}
+    previous = {4724}
+    while n:
+        actors = set()
+        if not nodes:
+            break
+        for node in nodes:
+            for actor in transformed_data[node]["actors"]:
+                if not actor in previous:
+                    actors.add(actor)
+                    previous.add(actor)
+        n -= 1
+        # Set of actors becomes new set of nodes
+        nodes = actors
+    return actors
 
 
 def bacon_path(transformed_data, actor_id):
@@ -78,17 +98,23 @@ def actors_connecting_films(transformed_data, film1, film2):
 
 
 if __name__ == '__main__':
-    with open('resources/small.pickle', 'rb') as f:
-        smalldb = pickle.load(f)
-    transformed_data = transform_data(smalldb)
-    with open('resources/names.pickle', 'rb') as f:
-        names = pickle.load(f)
-    actor1 = names["James Caan"]
-    actor2 = names["David Stevens"]
-    print(acted_together(transformed_data, actor1, actor2))
-    actor1 = names["Natascha McElhone"]
-    actor2 = names["Rose Byrne"]
-    print(acted_together(transformed_data, actor1, actor2))
+    import os
+    current_dir = os.path.dirname(__file__)
+    filename = os.path.join(current_dir, 'resources', 'tiny.pickle')
+    with open(filename, 'rb') as f:
+        db = pickle.load(f)
+    print(db)
+    transformed_data = transform_data(db)
+    actors_with_bacon_number(transformed_data, 2)
+    # Acted together questions
+    # with open('resources/names.pickle', 'rb') as f:
+    #    names = pickle.load(f)
+    # actor1 = names["James Caan"]
+    # actor2 = names["David Stevens"]
+    # print(acted_together(transformed_data, actor1, actor2))
+    # actor1 = names["Natascha McElhone"]
+    # actor2 = names["Rose Byrne"]
+    # print(acted_together(transformed_data, actor1, actor2))
     """ with open('resources/names.pickle', 'rb') as f:
         codes: dict = pickle.load(f)
     codes['Jose Antonio Donato'] # 1223511
